@@ -332,7 +332,7 @@ if useStreamLadderAsk == 'y' or str(USE_STREAMLADDER) == 'ALL':
 defaultTitle = str(videoFileClearName[int(chosenClipsInput)])
 title = None
 rep = str(input(Fore.GREEN + 'Choose title and # or press enter to default title: ' + str(
-    videoFileClearName[int(chosenClipsInput)])))
+    videoFileClearName[int(chosenClipsInput)]) + '\n'))
 # fi press enter the title is by default else is user entry
 if len(rep) > 0:
     title = rep
