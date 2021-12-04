@@ -1,0 +1,5 @@
+art==5.3
+colorama==0.4.4
+selenium==4.1.0
+twitchAPI==2.5.1
+undetected_chromedriver==3.0.6
