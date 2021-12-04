@@ -40,6 +40,7 @@ CHROME_USER_DATA = config.get('CONFIG', 'CHROME_USER_DATA')
 # twitch api
 twitch = Twitch(CLIENT_ID, SECRET_CLIENT)
 
+
 # ASCII text
 def TitlePrint():
     print(Fore.GREEN + text2art("TTB By Wokia", font='sub-zero'))
@@ -160,22 +161,28 @@ if len(streamersListId) <= 1:
             clipsUrl.append(i['url'])
     # print nb of clips and streamer name
     print(Fore.GREEN + str(nbClips) + ' clips found of ' + streamerName)
+    if nbClips <= 0:
+        print(Fore.RED + '\nNO CLIP FOUND')
+        quit()
 
 # random streamers
 else:
-    clipsResponse = [twitch.get_clips(broadcaster_id=streamersListId[randrange(len(streamersListId))],
-                                      first=NUMBER_CLIPS_REQ, started_at=startDate, ended_at=endDate)]
     nbClips = 0
-    # read api response
-    for clip in clipsResponse:
-        data = clip['data']
-        for i in data:
-            nbClips = nbClips + 1
-            streamerName = i['broadcaster_name']
-            # add url clips in clipsUrl
-            clipsUrl.append(i['url'])
-    # print nb of clips and streamer name
-    print(Fore.GREEN + '\n' + str(nbClips) + ' clips found of ' + streamerName)
+    while nbClips <= 0:
+        print('random')
+        clipsResponse = [twitch.get_clips(broadcaster_id=streamersListId[randrange(len(streamersListId))],
+                                          first=NUMBER_CLIPS_REQ, started_at=startDate, ended_at=endDate)]
+
+        # read api response
+        for clip in clipsResponse:
+            data = clip['data']
+            for i in data:
+                nbClips = nbClips + 1
+                streamerName = i['broadcaster_name']
+                # add url clips in clipsUrl
+                clipsUrl.append(i['url'])
+        # print nb of clips and streamer name
+        print(Fore.GREEN + '\n' + str(nbClips) + ' clips found of ' + streamerName)
 
 # download all clips
 for url in clipsUrl:
@@ -321,7 +328,6 @@ if useStreamLadderAsk == 'y' or str(USE_STREAMLADDER) == 'ALL':
 
     print(Fore.CYAN + '\n' + '*' * 112 + '\n')
 
-
 # choose title of video
 defaultTitle = str(videoFileClearName[int(chosenClipsInput)])
 title = None
@@ -356,7 +362,8 @@ sleep(1)
 # try to load video
 print(Fore.YELLOW + '\nTry to load video on tiktok')
 try:
-    ChDriver.find_element(By.CSS_SELECTOR, 'input.jsx-1828163283.upload-btn-input').send_keys(VIDEO_PATH + videoUploadName)
+    ChDriver.find_element(By.CSS_SELECTOR, 'input.jsx-1828163283.upload-btn-input').send_keys(
+        VIDEO_PATH + videoUploadName)
     print(Fore.GREEN + 'Success load video on tiktok\n')
 except:
     print(Fore.RED + 'ERROR WITH LOADING VIDEO ON TIKTOK \n')
